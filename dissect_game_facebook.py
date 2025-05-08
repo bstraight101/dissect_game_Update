@@ -1,10 +1,6 @@
 import streamlit as st
 import random
 import csv
-from streamlit.runtime.scriptrunner import add_script_run_ctx, get_script_run_ctx
-
-# Get the current script run context
-ctx = get_script_run_ctx()
 
 # Updated sections including a separate Literature Review
 sections = {
@@ -64,8 +60,7 @@ st.set_page_config(page_title="Facebook & Loneliness Game", layout="centered")
 st.title("📘 Facebook & Loneliness: Research Dissection Game")
 st.markdown("Explore and learn from a real journal article. Match each excerpt to its section, and test your knowledge.")
 
-st.session_state.round += 1
-st.subheader(f"🔍 Round {st.session_state.round}: Read This Excerpt")
+st.subheader(f"🔍 Round {st.session_state.round + 1}: Read This Excerpt")
 st.info(st.session_state.section_data["text"])
 
 user_guess = st.selectbox("Which section is this from?", list(sections.keys()))
@@ -97,7 +92,7 @@ if submit_guess:
             st.write(st.session_state.section_data["explanation"])
 
     st.session_state.history.append({
-        "round": st.session_state.round,
+        "round": st.session_state.round + 1,
         "guess": user_guess,
         "correct_section": st.session_state.section_name,
         "bonus_answer": answer,
@@ -105,10 +100,10 @@ if submit_guess:
         "score": st.session_state.score
     })
 
-    if st.button("Next Round ▶️"):
-        # Reset section for next round
-        st.session_state.section_name, st.session_state.section_data = random.choice(list(sections.items()))
-        st.experimental_rerun()
+    # Increment round and reset section for next round
+    st.session_state.round += 1
+    st.session_state.section_name, st.session_state.section_data = random.choice(list(sections.items()))
+    st.experimental_rerun()
 
 # Download CSV
 if st.session_state.history:
