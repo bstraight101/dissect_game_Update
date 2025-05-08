@@ -106,7 +106,7 @@ if submit_guess:
 
 # Display next round button only after submitting the answer
 if submit_guess:
-    st.button("Next Round ▶️", on_click=lambda: st.experimental_rerun())
+    st.button("Next Round ▶️", on_click=lambda: st.rerun())
 
 # Download CSV
 if st.session_state.history:
