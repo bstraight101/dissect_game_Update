@@ -66,6 +66,11 @@ st.info(st.session_state.section_data["text"])
 user_guess = st.selectbox("Which section is this from?", list(sections.keys()))
 submit_guess = st.button("Submit Answer")
 
+def next_round():
+    st.session_state.round += 1
+    st.session_state.section_name, st.session_state.section_data = random.choice(list(sections.items()))
+    st.experimental_rerun()
+
 if submit_guess:
     correct = user_guess == st.session_state.section_name
     if correct:
@@ -100,10 +105,7 @@ if submit_guess:
         "score": st.session_state.score
     })
 
-    # Increment round and reset section for next round
-    st.session_state.round += 1
-    st.session_state.section_name, st.session_state.section_data = random.choice(list(sections.items()))
-    st.experimental_rerun()
+    st.button("Next Round ▶️", on_click=next_round)
 
 # Download CSV
 if st.session_state.history:
